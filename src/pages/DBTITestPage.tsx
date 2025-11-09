@@ -1,29 +1,39 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useQuery, useMutation } from '@tanstack/react-query'
-import { getDBTIQuestions, submitDBTI } from '../services/api'
-import { Button } from '../components/ui/Button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/Card'
-import { ArrowLeft, ArrowRight, Send } from 'lucide-react'
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { getDBTIQuestions, submitDBTI } from "../services/api";
+import { Button } from "../components/ui/Button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/Card";
+import { ArrowLeft, ArrowRight, Send } from "lucide-react";
 
 export default function DBTITestPage() {
-  const navigate = useNavigate()
-  const [currentQuestion, setCurrentQuestion] = useState(0)
-  const [answers, setAnswers] = useState<Record<number, string>>({})
+  const navigate = useNavigate();
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [answers, setAnswers] = useState<Record<number, string>>({});
 
   // 질문 목록 불러오기
-  const { data: questions, isLoading, error } = useQuery({
-    queryKey: ['dbti-questions'],
+  const {
+    data: questions,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["dbti-questions"],
     queryFn: getDBTIQuestions,
-  })
+  });
 
   // 테스트 제출
   const submitMutation = useMutation({
     mutationFn: submitDBTI,
     onSuccess: (data) => {
-      navigate(`/result/${data.dbti_code}`)
+      navigate(`/result/${data.dbti_code}`);
     },
-  })
+  });
 
   if (isLoading) {
     return (
@@ -33,7 +43,7 @@ export default function DBTITestPage() {
           <p className="text-lg text-muted-foreground">질문을 불러오는 중...</p>
         </div>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -45,49 +55,51 @@ export default function DBTITestPage() {
             <CardDescription>질문을 불러올 수 없습니다</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button onClick={() => navigate('/')}>홈으로 돌아가기</Button>
+            <Button onClick={() => navigate("/")}>홈으로 돌아가기</Button>
           </CardContent>
         </Card>
       </div>
-    )
+    );
   }
 
   if (!questions || questions.length === 0) {
-    return null
+    return null;
   }
 
-  const question = questions[currentQuestion]
-  const progress = ((currentQuestion + 1) / questions.length) * 100
-  const isLastQuestion = currentQuestion === questions.length - 1
-  const canProceed = answers[question.id] !== undefined
+  const question = questions[currentQuestion];
+  const progress = ((currentQuestion + 1) / questions.length) * 100;
+  const isLastQuestion = currentQuestion === questions.length - 1;
+  const canProceed = answers[question.id] !== undefined;
 
-  const handleAnswer = (answer: 'A' | 'B') => {
+  const handleAnswer = (answer: "A" | "B") => {
     setAnswers((prev) => ({
       ...prev,
       [question.id]: answer,
-    }))
-  }
+    }));
+  };
 
   const handleNext = () => {
     if (isLastQuestion) {
       // 마지막 질문이면 제출
       // answers 객체를 배열로 변환
-      const answersArray = Object.entries(answers).map(([questionId, selected]) => ({
-        question_id: parseInt(questionId),
-        selected: selected
-      }))
-      submitMutation.mutate({ answers: answersArray })
+      const answersArray = Object.entries(answers).map(
+        ([questionId, selected]) => ({
+          question_id: parseInt(questionId),
+          selected: selected,
+        })
+      );
+      submitMutation.mutate({ answers: answersArray });
     } else {
       // 다음 질문으로
-      setCurrentQuestion((prev) => prev + 1)
+      setCurrentQuestion((prev) => prev + 1);
     }
-  }
+  };
 
   const handlePrevious = () => {
     if (currentQuestion > 0) {
-      setCurrentQuestion((prev) => prev - 1)
+      setCurrentQuestion((prev) => prev - 1);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen py-8">
@@ -209,6 +221,5 @@ export default function DBTITestPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-
