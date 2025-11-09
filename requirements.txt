@@ -1,0 +1,37 @@
+# ============================================================
+# DBTI v2 Backend Dependencies (최신 버전)
+# Python 3.11+ 권장
+# ============================================================
+
+# FastAPI & Server
+fastapi
+uvicorn[standard]
+
+# Validation & Settings
+pydantic
+pydantic-settings
+python-dotenv
+
+# HTTP Client (async)
+httpx
+
+# CORS & Security
+python-multipart
+
+# Vector DB & AI
+pymilvus
+sentence-transformers
+openai
+
+# Data Processing
+pandas
+numpy
+
+# Testing
+pytest
+pytest-asyncio
+
+# Development
+black
+ruff
+
