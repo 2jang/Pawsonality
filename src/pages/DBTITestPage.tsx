@@ -133,47 +133,77 @@ export default function DBTITestPage() {
           <CardContent className="space-y-4">
             {/* Option A */}
             <button
-              onClick={() => handleAnswer('A')}
-              className={`w-full p-6 text-left rounded-lg border-2 transition-all hover:shadow-md ${
-                answers[question.id] === 'A'
-                  ? 'border-primary bg-primary/5'
-                  : 'border-border hover:border-primary/50'
+              onClick={() => handleAnswer("A")}
+              className={`w-full p-6 text-left rounded-lg border-2 transition-all duration-200 hover:shadow-lg relative ${
+                answers[question.id] === "A"
+                  ? "border-primary bg-primary/10 shadow-md scale-[1.02]"
+                  : "border-border hover:border-primary/50 hover:bg-gray-50"
               }`}
             >
               <div className="flex items-center gap-3">
                 <div
-                  className={`flex-shrink-0 w-8 h-8 rounded-full border-2 flex items-center justify-center font-bold ${
-                    answers[question.id] === 'A'
-                      ? 'border-primary bg-primary text-primary-foreground'
-                      : 'border-border'
+                  className={`flex-shrink-0 w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-lg transition-all ${
+                    answers[question.id] === "A"
+                      ? "border-primary bg-primary text-primary-foreground shadow-lg"
+                      : "border-gray-300 text-gray-400"
                   }`}
                 >
-                  A
+                  {answers[question.id] === "A" ? "✓" : "A"}
                 </div>
-                <span className="text-lg">{question.option_a}</span>
+                <span
+                  className={`text-lg flex-1 ${
+                    answers[question.id] === "A"
+                      ? "font-semibold text-primary"
+                      : "font-normal"
+                  }`}
+                >
+                  {question.option_a}
+                </span>
+                {answers[question.id] === "A" && (
+                  <div className="flex-shrink-0">
+                    <span className="inline-block px-3 py-1 bg-primary text-primary-foreground text-sm font-medium rounded-full">
+                      선택됨
+                    </span>
+                  </div>
+                )}
               </div>
             </button>
 
             {/* Option B */}
             <button
-              onClick={() => handleAnswer('B')}
-              className={`w-full p-6 text-left rounded-lg border-2 transition-all hover:shadow-md ${
-                answers[question.id] === 'B'
-                  ? 'border-primary bg-primary/5'
-                  : 'border-border hover:border-primary/50'
+              onClick={() => handleAnswer("B")}
+              className={`w-full p-6 text-left rounded-lg border-2 transition-all duration-200 hover:shadow-lg relative ${
+                answers[question.id] === "B"
+                  ? "border-primary bg-primary/10 shadow-md scale-[1.02]"
+                  : "border-border hover:border-primary/50 hover:bg-gray-50"
               }`}
             >
               <div className="flex items-center gap-3">
                 <div
-                  className={`flex-shrink-0 w-8 h-8 rounded-full border-2 flex items-center justify-center font-bold ${
-                    answers[question.id] === 'B'
-                      ? 'border-primary bg-primary text-primary-foreground'
-                      : 'border-border'
+                  className={`flex-shrink-0 w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-lg transition-all ${
+                    answers[question.id] === "B"
+                      ? "border-primary bg-primary text-primary-foreground shadow-lg"
+                      : "border-gray-300 text-gray-400"
                   }`}
                 >
-                  B
+                  {answers[question.id] === "B" ? "✓" : "B"}
                 </div>
-                <span className="text-lg">{question.option_b}</span>
+                <span
+                  className={`text-lg flex-1 ${
+                    answers[question.id] === "B"
+                      ? "font-semibold text-primary"
+                      : "font-normal"
+                  }`}
+                >
+                  {question.option_b}
+                </span>
+                {answers[question.id] === "B" && (
+                  <div className="flex-shrink-0">
+                    <span className="inline-block px-3 py-1 bg-primary text-primary-foreground text-sm font-medium rounded-full">
+                      선택됨
+                    </span>
+                  </div>
+                )}
               </div>
             </button>
           </CardContent>
