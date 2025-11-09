@@ -1,0 +1,45 @@
+{
+  "name": "dbti-frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@radix-ui/react-slot": "*",
+    "@tailwindcss/postcss": "^4.1.17",
+    "@tanstack/react-query": "*",
+    "autoprefixer": "*",
+    "axios": "*",
+    "class-variance-authority": "*",
+    "clsx": "*",
+    "lucide-react": "*",
+    "postcss": "*",
+    "react": "*",
+    "react-dom": "*",
+    "react-router-dom": "*",
+    "tailwind-merge": "*",
+    "tailwindcss": "*"
+  },
+  "devDependencies": {
+    "@eslint/js": "*",
+    "@types/node": "*",
+    "@types/react": "*",
+    "@types/react-dom": "*",
+    "@vitejs/plugin-react": "*",
+    "autoprefixer": "*",
+    "eslint": "*",
+    "eslint-plugin-react-hooks": "*",
+    "eslint-plugin-react-refresh": "*",
+    "globals": "*",
+    "postcss": "*",
+    "tailwindcss": "*",
+    "typescript": "*",
+    "typescript-eslint": "*",
+    "vite": "*"
+  }
+}
