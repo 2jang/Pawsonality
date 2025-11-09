@@ -1,0 +1,36 @@
+{
+  // Tailwind CSS 설정
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "css.lint.unknownAtRules": "ignore",
+  
+  // Tailwind IntelliSense
+  "tailwindCSS.emmetCompletions": true,
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  
+  // TypeScript 설정
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  
+  // 파일 연관
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  
+  // Prettier 설정 (선택사항)
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
+
