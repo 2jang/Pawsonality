@@ -1,5 +1,5 @@
 """
-Services for DBTI v2
+Services for Pawna 
 """
 from .embeddings import EmbeddingService
 from .vector_db import VectorDBService

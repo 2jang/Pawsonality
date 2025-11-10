@@ -73,8 +73,8 @@ class OpenRouterClient:
         headers = {
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json",
-            "HTTP-Referer": "https://github.com/yourusername/DBTI",  # 선택
-            "X-Title": "DBTI Chatbot"  # 선택
+            "HTTP-Referer": "https://github.com/yourusername/Pawna",  # 선택
+            "X-Title": "Pawna Chatbot"  # 선택
         }
         
         payload = {
