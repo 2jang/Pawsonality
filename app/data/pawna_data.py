@@ -1,39 +1,39 @@
 """
-DBTI 데이터 로더
-CSV 파일에서 DBTI 질문 및 유형 정보를 로드합니다.
+Pawna 데이터 로더
+CSV 파일에서 Pawna 질문 및 유형 정보를 로드합니다.
 """
 import csv
 from typing import List, Dict, Optional
 from pathlib import Path
 
 
-class DBTIDataLoader:
-    """DBTI 데이터를 로드하고 관리하는 클래스"""
+class PawnaDataLoader:
+    """Pawna 데이터를 로드하고 관리하는 클래스"""
     
     def __init__(self):
         self.data_dir = Path("data/raw")
-        self.dbti_types: Dict[str, Dict] = {}
+        self.pawna_types: Dict[str, Dict] = {}
         self.questions: List[Dict] = []
         self._load_data()
     
     def _load_data(self):
         """CSV 파일에서 데이터 로드"""
-        # DBTI 유형 정보 로드
-        dbti_csv = self.data_dir / "dbti_types.csv"
-        if dbti_csv.exists():
-            with open(dbti_csv, 'r', encoding='utf-8-sig') as f:
+        # Pawna 유형 정보 로드
+        pawna_csv = self.data_dir / "pawna_types.csv"
+        if pawna_csv.exists():
+            with open(pawna_csv, 'r', encoding='utf-8-sig') as f:
                 reader = csv.DictReader(f)
                 for row in reader:
-                    self.dbti_types[row['DBTI']] = row
-            print(f"✅ {len(self.dbti_types)}개의 DBTI 유형 로드 완료")
+                    self.pawna_types[row['Pawna']] = row
+            print(f"✅ {len(self.pawna_types)}개의 Pawna 유형 로드 완료")
         else:
-            print(f"⚠️  {dbti_csv} 파일을 찾을 수 없습니다.")
+            print(f"⚠️  {pawna_csv} 파일을 찾을 수 없습니다.")
         
         # 질문 데이터는 하드코딩
         self._load_questions()
     
     def _load_questions(self):
-        """DBTI 질문 생성 (12개)"""
+        """Pawna 질문 생성 (12개)"""
         self.questions = [
             {"id": 1, "title": "산책 나가자고 하면?", "type": "EI",
              "option_a": "즉시 뛰어나간다", "option_b": "잠시 생각한 후 나간다"},
@@ -65,12 +65,12 @@ class DBTIDataLoader:
         """모든 질문 반환"""
         return self.questions
     
-    def get_dbti_type(self, dbti_code: str) -> Optional[Dict]:
-        """DBTI 코드로 유형 정보 조회"""
-        return self.dbti_types.get(dbti_code)
+    def get_pawna_type(self, pawna_code: str) -> Optional[Dict]:
+        """Pawna 코드로 유형 정보 조회"""
+        return self.pawna_types.get(pawna_code)
     
-    def calculate_dbti(self, answers: List[Dict]) -> str:
-        """답변으로부터 DBTI 코드 계산"""
+    def calculate_pawna(self, answers: List[Dict]) -> str:
+        """답변으로부터 Pawna 코드 계산"""
         # EI, SN, TF, JP 각 차원별 점수 계산
         scores = {"E": 0, "I": 0, "S": 0, "N": 0, "T": 0, "F": 0, "J": 0, "P": 0}
         
@@ -86,23 +86,23 @@ class DBTIDataLoader:
                 scores[dimension[1]] += 1
         
         # 각 차원에서 더 높은 점수를 선택
-        dbti = ""
-        dbti += "W" if scores["E"] > scores["I"] else "D"  # W=외향, D=내향
-        dbti += "T" if scores["S"] > scores["N"] else "I"  # T=현실, I=직관
-        dbti += "I" if scores["T"] > scores["F"] else "L"  # I=이성, L=감성
-        dbti += "L" if scores["J"] > scores["P"] else "P"  # L=계획, P=즉흥
+        pawna = ""
+        pawna += "W" if scores["E"] > scores["I"] else "D"  # W=외향, D=내향
+        pawna += "T" if scores["S"] > scores["N"] else "I"  # T=현실, I=직관
+        pawna += "I" if scores["T"] > scores["F"] else "L"  # I=이성, L=감성
+        pawna += "L" if scores["J"] > scores["P"] else "P"  # L=계획, P=즉흥
         
-        return dbti
+        return pawna
 
 
 # 전역 데이터 로더 인스턴스
-_data_loader: Optional[DBTIDataLoader] = None
+_data_loader: Optional[PawnaDataLoader] = None
 
 
-def get_data_loader() -> DBTIDataLoader:
+def get_data_loader() -> PawnaDataLoader:
     """데이터 로더 싱글톤 인스턴스 반환"""
     global _data_loader
     if _data_loader is None:
-        _data_loader = DBTIDataLoader()
+        _data_loader = PawnaDataLoader()
     return _data_loader
 
