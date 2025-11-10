@@ -1,12 +1,12 @@
 """
-Pydantic Models for DBTI v2 API
+Pydantic Models for Pawna  API
 """
-from .dbti import (
-    DBTIQuestion,
-    DBTIAnswer,
-    DBTISubmission,
-    DBTIResult,
-    DBTIType
+from .pawna import (
+    PawnaQuestion,
+    PawnaAnswer,
+    PawnaSubmission,
+    PawnaResult,
+    PawnaType
 )
 from .chat import (
     ChatMessage,
@@ -21,12 +21,12 @@ from .mbti import (
 )
 
 __all__ = [
-    # DBTI Models
-    "DBTIQuestion",
-    "DBTIAnswer",
-    "DBTISubmission",
-    "DBTIResult",
-    "DBTIType",
+    # Pawna Models
+    "PawnaQuestion",
+    "PawnaAnswer",
+    "PawnaSubmission",
+    "PawnaResult",
+    "PawnaType",
     # Chat Models
     "ChatMessage",
     "ChatRequest",

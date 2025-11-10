@@ -46,7 +46,7 @@ class RAGService:
         self,
         query: str,
         top_k: int = 5,
-        dbti_filter: Optional[str] = None,
+        pawna_filter: Optional[str] = None,
         min_score: float = 0.3
     ) -> List[Dict]:
         """
@@ -55,7 +55,7 @@ class RAGService:
         Args:
             query: 사용자 질문
             top_k: 반환할 문서 개수
-            dbti_filter: DBTI 코드로 필터링
+            pawna_filter: Pawna 코드로 필터링
             min_score: 최소 유사도 점수
             
         Returns:
@@ -71,7 +71,7 @@ class RAGService:
         results = self.vector_db.search(
             query_embedding=query_embedding.tolist(),
             top_k=top_k,
-            dbti_filter=dbti_filter
+            pawna_filter=pawna_filter
         )
         
         # 최소 점수 필터링
@@ -99,7 +99,7 @@ class RAGService:
             context_parts.append(
                 f"[문서 {i}] {doc['title']}\n"
                 f"{doc['content']}\n"
-                f"(DBTI: {doc['dbti_code']}, 유사도: {doc['score']:.2f})"
+                f"(Pawna: {doc['pawna_code']}, 유사도: {doc['score']:.2f})"
             )
         
         return "\n\n".join(context_parts)
@@ -107,7 +107,7 @@ class RAGService:
     def generate_response_with_context(
         self,
         query: str,
-        dbti_type: Optional[str] = None,
+        pawna_type: Optional[str] = None,
         top_k: int = 3
     ) -> Dict:
         """
@@ -115,7 +115,7 @@ class RAGService:
         
         Args:
             query: 사용자 질문
-            dbti_type: 사용자의 DBTI 유형 (컨텍스트)
+            pawna_type: 사용자의 Pawna 유형 (컨텍스트)
             top_k: 검색할 문서 개수
             
         Returns:
@@ -125,7 +125,7 @@ class RAGService:
         retrieved_docs = self.retrieve_context(
             query=query,
             top_k=top_k,
-            dbti_filter=dbti_type
+            pawna_filter=pawna_type
         )
         
         # 2. 컨텍스트 포맷팅
@@ -138,9 +138,9 @@ class RAGService:
             top_doc = retrieved_docs[0]
             response = f"{top_doc['content']}"
             
-            # DBTI 유형 정보 추가
-            if dbti_type:
-                response += f"\n\n💡 {dbti_type} 유형에 대한 맞춤 정보입니다."
+            # Pawna 유형 정보 추가
+            if pawna_type:
+                response += f"\n\n💡 {pawna_type} 유형에 대한 맞춤 정보입니다."
         else:
             response = "죄송합니다. 관련 정보를 찾지 못했습니다. 다른 질문을 해주시겠어요?"
         

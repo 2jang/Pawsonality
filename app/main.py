@@ -1,12 +1,12 @@
 """
-DBTI v2 FastAPI Application
-Dog Behavior Type Indicator & AI Chatbot API
+Pawsonality  FastAPI Application
+Dog Personality Test & AI Chatbot API
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from .config import settings
-from .routers import dbti, chat, mbti
+from .routers import pawna, chat, mbti
 import logging
 
 # 로깅 설정
@@ -46,7 +46,7 @@ else:
     )
 
 # 라우터 등록
-app.include_router(dbti.router, prefix="/api/dbti", tags=["DBTI"])
+app.include_router(pawna.router, prefix="/api/pawna", tags=["Pawsonality"])
 app.include_router(chat.router, prefix="/api/chat", tags=["Chatbot"])
 app.include_router(mbti.router, prefix="/api/mbti", tags=["MBTI"])
 
@@ -57,7 +57,7 @@ async def startup_event():
     애플리케이션 시작 시 실행
     """
     logger.info("=" * 60)
-    logger.info("🐾 DBTI v2 API Starting...")
+    logger.info("🐾 Pawsonality  API Starting...")
     logger.info("=" * 60)
     logger.info(f"📌 Version: {settings.VERSION}")
     logger.info(f"📌 Debug Mode: {settings.DEBUG}")
@@ -83,7 +83,7 @@ async def shutdown_event():
     """
     애플리케이션 종료 시 실행
     """
-    logger.info("🛑 DBTI v2 API Shutting down...")
+    logger.info("🛑 Pawsonality  API Shutting down...")
 
 
 @app.get("/", tags=["Root"])
@@ -92,13 +92,13 @@ async def root():
     API 루트 엔드포인트
     """
     return {
-        "message": "🐾 DBTI v2 API",
+        "message": "🐾 Pawsonality  API",
         "version": settings.VERSION,
         "status": "running",
         "docs": "/docs",
         "redoc": "/redoc",
         "endpoints": {
-            "dbti": "/api/dbti",
+            "pawna": "/api/pawna",
             "chat": "/api/chat",
             "mbti": "/api/mbti"
         }

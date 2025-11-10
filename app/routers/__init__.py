@@ -1,7 +1,7 @@
 """
-API Routers for DBTI v2
+API Routers for Pawna 
 """
-from . import dbti, chat, mbti
+from . import pawna, chat, mbti
 
-__all__ = ["dbti", "chat", "mbti"]
+__all__ = ["pawna", "chat", "mbti"]
 

@@ -73,7 +73,7 @@ class SimpleVectorDB:
         self,
         query_embedding: np.ndarray,
         top_k: int = 5,
-        dbti_filter: Optional[str] = None,
+        pawna_filter: Optional[str] = None,
         min_score: float = 0.0
     ) -> List[Dict]:
         """
@@ -82,7 +82,7 @@ class SimpleVectorDB:
         Args:
             query_embedding: 쿼리 임베딩 벡터
             top_k: 반환할 결과 개수
-            dbti_filter: DBTI 코드로 필터링
+            pawna_filter: Pawna 코드로 필터링
             min_score: 최소 유사도 점수
             
         Returns:
@@ -103,11 +103,11 @@ class SimpleVectorDB:
         # 코사인 유사도 계산 (내적)
         similarities = np.dot(embeddings_norm, query_norm)
         
-        # DBTI 필터링
-        if dbti_filter:
+        # Pawna 필터링
+        if pawna_filter:
             filtered_indices = [
                 i for i, doc in enumerate(self.documents)
-                if doc.get('dbti_code') == dbti_filter
+                if doc.get('pawna_code') == pawna_filter
             ]
             if filtered_indices:
                 filtered_similarities = similarities[filtered_indices]

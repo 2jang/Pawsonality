@@ -59,7 +59,7 @@ class SimpleRAGService:
         self,
         query: str,
         top_k: int = 5,
-        dbti_filter: Optional[str] = None,
+        pawna_filter: Optional[str] = None,
         min_score: float = 0.3
     ) -> List[Dict]:
         """
@@ -68,7 +68,7 @@ class SimpleRAGService:
         Args:
             query: 사용자 질문
             top_k: 반환할 문서 개수
-            dbti_filter: DBTI 코드로 필터링
+            pawna_filter: Pawna 코드로 필터링
             min_score: 최소 유사도 점수
             
         Returns:
@@ -84,7 +84,7 @@ class SimpleRAGService:
         results = self.vector_db.search(
             query_embedding=query_embedding,
             top_k=top_k,
-            dbti_filter=dbti_filter,
+            pawna_filter=pawna_filter,
             min_score=min_score
         )
         
@@ -110,7 +110,7 @@ class SimpleRAGService:
             context_parts.append(
                 f"[문서 {i}] {doc['title']}\n"
                 f"{doc['content']}\n"
-                f"(DBTI: {doc['dbti_code']}, 유사도: {doc['score']:.2f})"
+                f"(Pawna: {doc['pawna_code']}, 유사도: {doc['score']:.2f})"
             )
         
         return "\n\n".join(context_parts)
@@ -118,7 +118,7 @@ class SimpleRAGService:
     async def generate_response_with_context(
         self,
         query: str,
-        dbti_type: Optional[str] = None,
+        pawna_type: Optional[str] = None,
         top_k: int = 3,
         use_llm: bool = True
     ) -> Dict:
@@ -127,7 +127,7 @@ class SimpleRAGService:
         
         Args:
             query: 사용자 질문
-            dbti_type: 사용자의 DBTI 유형 (컨텍스트)
+            pawna_type: 사용자의 Pawna 유형 (컨텍스트)
             top_k: 검색할 문서 개수
             use_llm: LLM 사용 여부 (False면 검색 결과만 반환)
             
@@ -138,7 +138,7 @@ class SimpleRAGService:
         retrieved_docs = self.retrieve_context(
             query=query,
             top_k=top_k,
-            dbti_filter=dbti_type
+            pawna_filter=pawna_type
         )
         
         # 2. 컨텍스트 포맷팅
@@ -148,7 +148,7 @@ class SimpleRAGService:
         if use_llm and self._openrouter_available and retrieved_docs:
             try:
                 # 시스템 프롬프트 생성
-                system_prompt = self.prompt_templates.get_system_prompt(dbti_type)
+                system_prompt = self.prompt_templates.get_system_prompt(pawna_type)
                 
                 # 메시지 포맷팅
                 messages = self.openrouter_client.format_messages(
@@ -203,9 +203,9 @@ class SimpleRAGService:
                 for i, doc in enumerate(retrieved_docs[1:], 2):
                     response += f"• {doc['title']}\n"
             
-            # DBTI 유형 정보 추가
-            if dbti_type:
-                response += f"\n\n🐾 {dbti_type} 유형에 대한 맞춤 정보입니다."
+            # Pawna 유형 정보 추가
+            if pawna_type:
+                response += f"\n\n🐾 {pawna_type} 유형에 대한 맞춤 정보입니다."
         else:
             response = "죄송합니다. 관련 정보를 찾지 못했습니다. 다른 질문을 해주시겠어요?"
         
@@ -218,22 +218,22 @@ class SimpleRAGService:
             "llm_used": False
         }
     
-    def search_by_dbti(self, dbti_code: str, top_k: int = 10) -> List[Dict]:
+    def search_by_pawna(self, pawna_code: str, top_k: int = 10) -> List[Dict]:
         """
-        특정 DBTI 유형에 대한 모든 정보 검색
+        특정 Pawna 유형에 대한 모든 정보 검색
         
         Args:
-            dbti_code: DBTI 코드 (예: WTIL)
+            pawna_code: Pawna 코드 (예: WTIL)
             top_k: 반환할 결과 개수
             
         Returns:
-            List[Dict]: 해당 DBTI 유형의 문서 리스트
+            List[Dict]: 해당 Pawna 유형의 문서 리스트
         """
         if not self._initialized:
             self.initialize()
         
-        # 간단한 필터링 (DBTI 코드로만)
-        all_docs = [doc for doc in self.vector_db.documents if doc['dbti_code'] == dbti_code]
+        # 간단한 필터링 (Pawna 코드로만)
+        all_docs = [doc for doc in self.vector_db.documents if doc['pawna_code'] == pawna_code]
         return all_docs[:top_k]
 
 

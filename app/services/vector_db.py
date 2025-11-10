@@ -22,9 +22,9 @@ class VectorDBService:
     
     def __init__(
         self,
-        collection_name: str = "dbti_knowledge",
+        collection_name: str = "pawna_knowledge",
         dim: int = 384,
-        db_file: str = "./milvus_dbti.db"
+        db_file: str = "./milvus_pawna.db"
     ):
         """
         Args:
@@ -70,7 +70,7 @@ class VectorDBService:
         
         fields = [
             FieldSchema(name="id", dtype=DataType.INT64, is_primary=True, auto_id=False),
-            FieldSchema(name="dbti_code", dtype=DataType.VARCHAR, max_length=10),
+            FieldSchema(name="pawna_code", dtype=DataType.VARCHAR, max_length=10),
             FieldSchema(name="category", dtype=DataType.VARCHAR, max_length=50),
             FieldSchema(name="title", dtype=DataType.VARCHAR, max_length=500),
             FieldSchema(name="content", dtype=DataType.VARCHAR, max_length=2000),
@@ -79,7 +79,7 @@ class VectorDBService:
         
         schema = CollectionSchema(
             fields=fields,
-            description="DBTI Knowledge Base for RAG"
+            description="Pawna Knowledge Base for RAG"
         )
         
         # 컬렉션 생성
@@ -107,7 +107,7 @@ class VectorDBService:
         문서와 임베딩을 컬렉션에 삽입
         
         Args:
-            documents: 문서 리스트 (id, dbti_code, category, title, content)
+            documents: 문서 리스트 (id, pawna_code, category, title, content)
             embeddings: 임베딩 벡터 리스트
         """
         if self.collection is None:
@@ -116,7 +116,7 @@ class VectorDBService:
         # 데이터 준비
         data = [
             [doc["id"] for doc in documents],              # id
-            [doc["dbti_code"] for doc in documents],       # dbti_code
+            [doc["pawna_code"] for doc in documents],       # pawna_code
             [doc["category"] for doc in documents],        # category
             [doc["title"] for doc in documents],           # title
             [doc["content"] for doc in documents],         # content
@@ -134,7 +134,7 @@ class VectorDBService:
         self,
         query_embedding: List[float],
         top_k: int = 5,
-        dbti_filter: Optional[str] = None
+        pawna_filter: Optional[str] = None
     ) -> List[Dict]:
         """
         벡터 검색 수행
@@ -142,7 +142,7 @@ class VectorDBService:
         Args:
             query_embedding: 쿼리 임베딩 벡터
             top_k: 반환할 결과 개수
-            dbti_filter: DBTI 코드로 필터링 (선택)
+            pawna_filter: Pawna 코드로 필터링 (선택)
             
         Returns:
             List[Dict]: 검색 결과 (유사도 순)
@@ -161,8 +161,8 @@ class VectorDBService:
         
         # 필터 표현식
         expr = None
-        if dbti_filter:
-            expr = f'dbti_code == "{dbti_filter}"'
+        if pawna_filter:
+            expr = f'pawna_code == "{pawna_filter}"'
         
         # 검색
         results = self.collection.search(
@@ -171,7 +171,7 @@ class VectorDBService:
             param=search_params,
             limit=top_k,
             expr=expr,
-            output_fields=["id", "dbti_code", "category", "title", "content"]
+            output_fields=["id", "pawna_code", "category", "title", "content"]
         )
         
         # 결과 파싱
@@ -180,7 +180,7 @@ class VectorDBService:
             for hit in hits:
                 search_results.append({
                     "id": hit.entity.get("id"),
-                    "dbti_code": hit.entity.get("dbti_code"),
+                    "pawna_code": hit.entity.get("pawna_code"),
                     "category": hit.entity.get("category"),
                     "title": hit.entity.get("title"),
                     "content": hit.entity.get("content"),

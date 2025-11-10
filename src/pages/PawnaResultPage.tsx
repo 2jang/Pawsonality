@@ -1,18 +1,28 @@
-import { useParams, Link } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
-import { getDBTIType } from '../services/api'
-import { Button } from '../components/ui/Button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/Card'
-import { Home, MessageCircle, Share2 } from 'lucide-react'
+import { useParams, Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getPawnaType } from "../services/api";
+import { Button } from "../components/ui/Button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/Card";
+import { Home, MessageCircle, Share2 } from "lucide-react";
 
-export default function DBTIResultPage() {
-  const { code } = useParams<{ code: string }>()
+export default function PawnaResultPage() {
+  const { code } = useParams<{ code: string }>();
 
-  const { data: result, isLoading, error } = useQuery({
-    queryKey: ['dbti-type', code],
-    queryFn: () => getDBTIType(code!),
+  const {
+    data: result,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["pawna-type", code],
+    queryFn: () => getPawnaType(code!),
     enabled: !!code,
-  })
+  });
 
   if (isLoading) {
     return (
@@ -22,7 +32,7 @@ export default function DBTIResultPage() {
           <p className="text-lg text-muted-foreground">결과를 불러오는 중...</p>
         </div>
       </div>
-    )
+    );
   }
 
   if (error || !result) {
@@ -31,7 +41,7 @@ export default function DBTIResultPage() {
         <Card className="max-w-md">
           <CardHeader>
             <CardTitle>결과를 찾을 수 없습니다</CardTitle>
-            <CardDescription>유효하지 않은 DBTI 코드입니다</CardDescription>
+            <CardDescription>유효하지 않은 코드입니다</CardDescription>
           </CardHeader>
           <CardContent>
             <Link to="/">
@@ -40,7 +50,7 @@ export default function DBTIResultPage() {
           </CardContent>
         </Card>
       </div>
-    )
+    );
   }
 
   return (
@@ -49,7 +59,7 @@ export default function DBTIResultPage() {
         {/* Result Header */}
         <div className="text-center mb-8">
           <div className="inline-block px-6 py-3 bg-primary text-primary-foreground rounded-full text-2xl font-bold mb-4">
-            {result.dbti_code}
+            {result.pawna_code}
           </div>
           <h1 className="text-4xl font-bold mb-2">{result.type_name}</h1>
           <p className="text-xl text-muted-foreground">{result.description}</p>
@@ -132,7 +142,7 @@ export default function DBTIResultPage() {
               홈으로
             </Button>
           </Link>
-          <Link to="/chat" state={{ dbtiType: result.dbti_code }}>
+          <Link to="/chat" state={{ pawnaType: result.pawna_code }}>
             <Button size="lg">
               <MessageCircle className="mr-2" />
               AI 챗봇과 대화하기
@@ -144,13 +154,13 @@ export default function DBTIResultPage() {
             onClick={() => {
               if (navigator.share) {
                 navigator.share({
-                  title: `DBTI 결과: ${result.type_name}`,
+                  title: `Pawsonality 결과: ${result.type_name}`,
                   text: `나의 강아지는 ${result.type_name}! ${result.description}`,
                   url: window.location.href,
-                })
+                });
               } else {
-                navigator.clipboard.writeText(window.location.href)
-                alert('링크가 복사되었습니다!')
+                navigator.clipboard.writeText(window.location.href);
+                alert("링크가 복사되었습니다!");
               }
             }}
           >
@@ -160,6 +170,5 @@ export default function DBTIResultPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-

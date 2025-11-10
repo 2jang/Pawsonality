@@ -1,31 +1,31 @@
 """
-Prompt Templates for DBTI Chatbot
-DBTI 챗봇을 위한 프롬프트 템플릿
+Prompt Templates for Pawsonality Chatbot
+Pawsonality 챗봇을 위한 프롬프트 템플릿
 """
 from typing import Optional, List
 
 
 class PromptTemplates:
     """
-    DBTI 챗봇 프롬프트 템플릿 모음
+    Pawsonality 챗봇 프롬프트 템플릿 모음
     """
     
     @staticmethod
-    def get_system_prompt(dbti_type: Optional[str] = None) -> str:
+    def get_system_prompt(pawna_type: Optional[str] = None) -> str:
         """
         시스템 프롬프트 생성
         
         Args:
-            dbti_type: 사용자의 DBTI 유형 (선택)
+            pawna_type: 사용자의 Pawna 유형 (선택)
             
         Returns:
             str: 시스템 프롬프트
         """
-        base_prompt = """당신은 DBTI (Dog Behavior Type Indicator) 전문가입니다.
-반려견의 성향과 행동을 분석하고, 맞춤형 양육 가이드를 제공하는 AI 어시스턴트입니다.
+        base_prompt = """당신은 Pawsonality (Dog Personality Test) 전문가입니다.
+반려견의 성격과 행동을 분석하고, 맞춤형 양육 가이드를 제공하는 AI 어시스턴트입니다.
 
 ## 역할
-- 반려견의 DBTI 유형에 대해 설명
+- 반려견의 Pawsonality 유형에 대해 설명
 - 각 유형별 특성과 성격 소개
 - 맞춤형 양육 방법 및 솔루션 제공
 - 훈련, 산책, 사회화 등에 대한 조언
@@ -41,29 +41,29 @@ class PromptTemplates:
 - 참고 정보를 기반으로 정확한 답변 제공
 - 모르는 내용은 솔직하게 인정"""
         
-        if dbti_type:
+        if pawna_type:
             base_prompt += f"""
 
 ## 사용자 정보
-- 반려견 DBTI 유형: {dbti_type}
+- 반려견 Pawna 유형: {pawna_type}
 - 이 유형의 특성을 고려하여 맞춤형 답변 제공"""
         
         return base_prompt
     
     @staticmethod
-    def get_rag_prompt(query: str, context: str, dbti_type: Optional[str] = None) -> str:
+    def get_rag_prompt(query: str, context: str, pawna_type: Optional[str] = None) -> str:
         """
         RAG 기반 질문-답변 프롬프트
         
         Args:
             query: 사용자 질문
             context: RAG 컨텍스트
-            dbti_type: DBTI 유형
+            pawna_type: Pawna 유형
             
         Returns:
             str: 프롬프트
         """
-        prompt = f"""다음은 DBTI 지식 베이스에서 검색된 관련 정보입니다:
+        prompt = f"""다음은 Pawsonality 지식 베이스에서 검색된 관련 정보입니다:
 
 {context}
 
@@ -72,8 +72,8 @@ class PromptTemplates:
 위 정보를 참고하여 다음 질문에 답변해주세요:
 질문: {query}"""
         
-        if dbti_type:
-            prompt += f"\n(사용자의 반려견은 {dbti_type} 유형입니다)"
+        if pawna_type:
+            prompt += f"\n(사용자의 반려견은 {pawna_type} 유형입니다)"
         
         prompt += """
 
@@ -90,28 +90,28 @@ class PromptTemplates:
         """
         폴백 프롬프트 (RAG 컨텍스트가 없을 때)
         """
-        return """DBTI 지식 베이스에서 관련 정보를 찾지 못했습니다.
+        return """Pawsonality 지식 베이스에서 관련 정보를 찾지 못했습니다.
 하지만 반려견 양육에 대한 일반적인 조언을 해드릴 수 있습니다.
 
 질문에 대해 알고 있는 내용을 바탕으로 도움을 드리겠습니다.
-단, 구체적인 DBTI 유형 정보는 제한적일 수 있습니다."""
+단, 구체적인 Pawna 유형 정보는 제한적일 수 있습니다."""
     
     @staticmethod
-    def get_greeting_prompt(dbti_type: Optional[str] = None) -> str:
+    def get_greeting_prompt(pawna_type: Optional[str] = None) -> str:
         """
         인사 프롬프트
         """
-        if dbti_type:
+        if pawna_type:
             return f"""안녕하세요! 🐾
-{dbti_type} 유형 반려견의 보호자님이시군요!
+{pawna_type} 유형 반려견의 보호자님이시군요!
 
-{dbti_type} 유형에 대해 궁금하신 점이나, 
+{pawna_type} 유형에 대해 궁금하신 점이나, 
 양육 방법, 훈련 팁 등 무엇이든 물어보세요!"""
         else:
             return """안녕하세요! 🐾
-DBTI 챗봇입니다.
+Pawsonality 챗봇입니다.
 
-반려견의 DBTI 유형에 대해 궁금하신 점이나,
+반려견의 Dog Personality 유형에 대해 궁금하신 점이나,
 양육 방법에 대해 무엇이든 물어보세요!"""
     
     @staticmethod
