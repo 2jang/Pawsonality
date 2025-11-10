@@ -1,5 +1,5 @@
 """
-DBTI v2 Configuration Management
+Pawsonality  Configuration Management
 Pydantic Settings를 사용한 환경 변수 관리
 """
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -19,8 +19,8 @@ class Settings(BaseSettings):
     RELOAD: bool = False
     
     # API Configuration
-    API_V2_PREFIX: str = "/api"
-    PROJECT_NAME: str = "DBTI API"
+    API__PREFIX: str = "/api"
+    PROJECT_NAME: str = "Pawsonality API"
     VERSION: str = "2.0.0"
     DESCRIPTION: str = "Dog Personality Test & AI Chatbot API"
     
@@ -39,7 +39,7 @@ class Settings(BaseSettings):
     # Milvus Configuration
     MILVUS_HOST: str = "localhost"
     MILVUS_PORT: int = 19530
-    MILVUS_COLLECTION: str = "dbti_knowledge"
+    MILVUS_COLLECTION: str = "pawna_knowledge"
     
     # Embedding Model
     EMBEDDING_MODEL: str = "sentence-transformers/all-MiniLM-L6-v2"
@@ -48,7 +48,7 @@ class Settings(BaseSettings):
     # Logging
     LOG_LEVEL: str = "INFO"
     
-    # Pydantic v2 설정
+    # Pydantic  설정
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
