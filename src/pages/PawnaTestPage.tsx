@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { getDBTIQuestions, submitDBTI } from "../services/api";
+import { getPawnaQuestions, submitPawna } from "../services/api";
 import { Button } from "../components/ui/Button";
 import {
   Card,
@@ -12,7 +12,7 @@ import {
 } from "../components/ui/Card";
 import { ArrowLeft, ArrowRight, Send } from "lucide-react";
 
-export default function DBTITestPage() {
+export default function PawnaTestPage() {
   const navigate = useNavigate();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
@@ -23,15 +23,15 @@ export default function DBTITestPage() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["dbti-questions"],
-    queryFn: getDBTIQuestions,
+    queryKey: ["pawna-questions"],
+    queryFn: getPawnaQuestions,
   });
 
   // 테스트 제출
   const submitMutation = useMutation({
-    mutationFn: submitDBTI,
+    mutationFn: submitPawna,
     onSuccess: (data) => {
-      navigate(`/result/${data.dbti_code}`);
+      navigate(`/result/${data.pawna_code}`);
     },
   });
 
@@ -106,7 +106,7 @@ export default function DBTITestPage() {
       <div className="container mx-auto px-4 max-w-3xl">
         {/* Header */}
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold mb-2">DBTI 테스트</h1>
+          <h1 className="text-3xl font-bold mb-2">Dog Personality Test</h1>
           <p className="text-muted-foreground">
             질문 {currentQuestion + 1} / {questions.length}
           </p>
