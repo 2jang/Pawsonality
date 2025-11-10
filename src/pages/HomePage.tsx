@@ -1,7 +1,13 @@
-import { Link } from 'react-router-dom'
-import { Button } from '../components/ui/Button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/Card'
-import { Dog, MessageCircle, Heart } from 'lucide-react'
+import { Link } from "react-router-dom";
+import { Button } from "../components/ui/Button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/Card";
+import { Dog, MessageCircle, Heart } from "lucide-react";
 
 export default function HomePage() {
   return (
@@ -12,13 +18,13 @@ export default function HomePage() {
           <Dog size={64} className="text-primary" />
         </div>
         <h1 className="text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-          DBTI
+          Pawsonality
         </h1>
         <p className="text-xl text-muted-foreground mb-2">
-          Dog Behavior Type Indicator
+          Dog Personality Test
         </p>
         <p className="text-lg text-muted-foreground mb-8">
-          우리 강아지의 성향을 알아보고, AI 챗봇과 대화해보세요! 🐾
+          우리 강아지의 성격을 알아보고, AI 챗봇과 대화해보세요! 🐾
         </p>
         <div className="flex justify-center gap-4">
           <Link to="/test">
@@ -40,9 +46,9 @@ export default function HomePage() {
           <Card className="hover:shadow-lg transition-shadow">
             <CardHeader>
               <Dog className="w-12 h-12 text-primary mb-4" />
-              <CardTitle>DBTI 테스트</CardTitle>
+              <CardTitle>Personality Test</CardTitle>
               <CardDescription>
-                16가지 질문으로 우리 강아지의 성향을 파악해보세요
+                12가지 질문으로 우리 강아지의 성격을 파악해보세요
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -59,7 +65,7 @@ export default function HomePage() {
               <MessageCircle className="w-12 h-12 text-primary mb-4" />
               <CardTitle>AI 챗봇</CardTitle>
               <CardDescription>
-                DBTI 전문 AI와 대화하며 양육 팁을 얻으세요
+                Dog Personality 전문 AI와 대화하며 양육 팁을 얻으세요
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -93,13 +99,12 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="mt-auto py-8 border-t">
         <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p>© 2025 DBTI v2 - Dog Behavior Type Indicator</p>
+          <p>© 2025 Pawsonality - Dog Personality Test</p>
           <p className="text-sm mt-2">
             FastAPI + Vite + React + TypeScript + OpenRouter
           </p>
         </div>
       </footer>
     </div>
-  )
+  );
 }
-
