@@ -30,7 +30,7 @@ async def chat(
     - OpenRouter LLM으로 자연스러운 응답 생성
     
     Args:
-        request: 챗봇 요청 (메시지, DBTI 유형, 대화 기록)
+        request: 챗봇 요청 (메시지, Pawna 유형, 대화 기록)
     
     Returns:
         ChatResponse: 챗봇 응답
@@ -39,7 +39,7 @@ async def chat(
         # RAG + LLM으로 응답 생성
         rag_result = await rag_service.generate_response_with_context(
             query=request.message,
-            dbti_type=request.dbti_type,
+            pawna_type=request.pawna_type,
             top_k=3,
             use_llm=True
         )
