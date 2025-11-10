@@ -46,7 +46,7 @@ class ChatbotService:
     async def generate_response(
         self,
         user_query: str,
-        dbti_type: Optional[str] = None,
+        pawna_type: Optional[str] = None,
         conversation_history: Optional[List[Dict]] = None,
         use_llm: bool = True,
         model: Optional[str] = None
@@ -56,7 +56,7 @@ class ChatbotService:
         
         Args:
             user_query: 사용자 질문
-            dbti_type: 사용자의 DBTI 유형
+            pawna_type: 사용자의 Pawna 유형
             conversation_history: 이전 대화 기록
             use_llm: LLM 사용 여부 (False면 RAG만 사용)
             model: 사용할 LLM 모델
@@ -74,7 +74,7 @@ class ChatbotService:
             context_docs = self.rag_service.retrieve_context(
                 query=user_query,
                 top_k=3,
-                dbti_filter=dbti_type,
+                pawna_filter=pawna_type,
                 min_score=0.3
             )
             
@@ -84,7 +84,7 @@ class ChatbotService:
                 response_text = await self._generate_llm_response(
                     user_query=user_query,
                     context_docs=context_docs,
-                    dbti_type=dbti_type,
+                    pawna_type=pawna_type,
                     conversation_history=conversation_history,
                     model=model
                 )
@@ -94,7 +94,7 @@ class ChatbotService:
                 logger.info("ℹ️  LLM 미사용 - RAG 기반 응답")
                 rag_result = self.rag_service.generate_response_with_context(
                     query=user_query,
-                    dbti_type=dbti_type,
+                    pawna_type=pawna_type,
                     top_k=3
                 )
                 response_text = rag_result["response"]
@@ -106,7 +106,7 @@ class ChatbotService:
                 "num_sources": len(context_docs),
                 "confidence": context_docs[0]["score"] if context_docs else 0.0,
                 "method": method,
-                "dbti_type": dbti_type
+                "pawna_type": pawna_type
             }
             
         except Exception as e:
@@ -126,7 +126,7 @@ class ChatbotService:
         self,
         user_query: str,
         context_docs: List[Dict],
-        dbti_type: Optional[str],
+        pawna_type: Optional[str],
         conversation_history: Optional[List[Dict]],
         model: Optional[str]
     ) -> str:
@@ -136,7 +136,7 @@ class ChatbotService:
         Args:
             user_query: 사용자 질문
             context_docs: 검색된 컨텍스트 문서
-            dbti_type: DBTI 유형
+            pawna_type: Pawna 유형
             conversation_history: 대화 기록
             model: LLM 모델
             
@@ -147,7 +147,7 @@ class ChatbotService:
         messages = PromptTemplates.create_conversation_messages(
             user_query=user_query,
             context_documents=context_docs,
-            dbti_type=dbti_type,
+            pawna_type=pawna_type,
             conversation_history=conversation_history
         )
         
@@ -170,16 +170,16 @@ class ChatbotService:
             logger.error("❌ LLM 응답에서 텍스트를 추출할 수 없습니다.")
             raise ValueError("Invalid LLM response format")
     
-    async def explain_dbti_type(
+    async def explain_pawna_type(
         self,
-        dbti_code: str,
+        pawna_code: str,
         use_llm: bool = True
     ) -> Dict:
         """
-        DBTI 유형에 대한 상세 설명 생성
+        Pawna 유형에 대한 상세 설명 생성
         
         Args:
-            dbti_code: DBTI 코드 (예: WTIL)
+            pawna_code: Pawna 코드 (예: WTIL)
             use_llm: LLM 사용 여부
             
         Returns:
@@ -188,24 +188,24 @@ class ChatbotService:
         if not self._initialized:
             self.initialize()
         
-        # 해당 DBTI 유형의 모든 문서 검색
-        dbti_docs = self.rag_service.search_by_dbti(dbti_code, top_k=10)
+        # 해당 Pawna 유형의 모든 문서 검색
+        pawna_docs = self.rag_service.search_by_pawna(pawna_code, top_k=10)
         
-        if not dbti_docs:
+        if not pawna_docs:
             return {
-                "response": f"{dbti_code} 유형에 대한 정보를 찾을 수 없습니다.",
+                "response": f"{pawna_code} 유형에 대한 정보를 찾을 수 없습니다.",
                 "sources": [],
                 "confidence": 0.0
             }
         
         if use_llm and self.llm_client.api_key:
             # LLM으로 자연스러운 설명 생성
-            prompt = PromptTemplates.create_dbti_explanation_prompt(
-                dbti_code, dbti_docs
+            prompt = PromptTemplates.create_pawna_explanation_prompt(
+                pawna_code, pawna_docs
             )
             
             messages = [
-                {"role": "system", "content": PromptTemplates.system_prompt(dbti_code)},
+                {"role": "system", "content": PromptTemplates.system_prompt(pawna_code)},
                 {"role": "user", "content": prompt}
             ]
             
@@ -218,15 +218,15 @@ class ChatbotService:
             response_text = result["choices"][0]["message"]["content"]
         else:
             # RAG만 사용
-            response_text = f"**{dbti_code} 유형 정보**:\n\n"
-            for doc in dbti_docs[:5]:
+            response_text = f"**{pawna_code} 유형 정보**:\n\n"
+            for doc in pawna_docs[:5]:
                 response_text += f"• {doc['title']}\n{doc['content']}\n\n"
         
         return {
             "response": response_text,
-            "sources": [doc["title"] for doc in dbti_docs[:5]],
+            "sources": [doc["title"] for doc in pawna_docs[:5]],
             "confidence": 1.0,
-            "dbti_code": dbti_code
+            "pawna_code": pawna_code
         }
     
     def get_status(self) -> Dict:
