@@ -26,7 +26,7 @@ class ChatMessage(BaseModel):
 class ChatRequest(BaseModel):
     """챗봇 요청 모델"""
     message: str = Field(..., min_length=1, max_length=1000, description="사용자 메시지")
-    dbti_type: Optional[str] = Field(None, description="사용자의 DBTI 유형 (컨텍스트)")
+    pawna_type: Optional[str] = Field(None, description="사용자의 Pawna 유형 (컨텍스트)")
     conversation_history: Optional[List[ChatMessage]] = Field(
         default_factory=list,
         max_length=10,
@@ -37,7 +37,7 @@ class ChatRequest(BaseModel):
         "json_schema_extra": {
             "example": {
                 "message": "우리 강아지가 산책 중에 다른 강아지를 보면 짖어요",
-                "dbti_type": "WTIL",
+                "pawna_type": "WTIL",
                 "conversation_history": []
             }
         }
@@ -55,7 +55,7 @@ class ChatResponse(BaseModel):
         "json_schema_extra": {
             "example": {
                 "message": "WTIL 유형의 강아지는 활발하고 호기심이 많아...",
-                "sources": ["DBTI 유형 가이드", "반려견 행동학"],
+                "sources": ["Pawsonality 유형 가이드", "반려견 행동학"],
                 "confidence": 0.95,
                 "timestamp": "2025-11-06T15:00:00"
             }
