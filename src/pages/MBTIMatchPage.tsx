@@ -1,28 +1,46 @@
-import { useState } from 'react'
-import { useMutation } from '@tanstack/react-query'
-import { getMBTIMatch } from '../services/api'
-import { Button } from '../components/ui/Button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/Card'
-import { Heart, Search } from 'lucide-react'
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { getMBTIMatch } from "../services/api";
+import { Button } from "../components/ui/Button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/Card";
+import { Heart, Search } from "lucide-react";
 
 const MBTI_TYPES = [
-  'INTJ', 'INTP', 'ENTJ', 'ENTP',
-  'INFJ', 'INFP', 'ENFJ', 'ENFP',
-  'ISTJ', 'ISFJ', 'ESTJ', 'ESFJ',
-  'ISTP', 'ISFP', 'ESTP', 'ESFP',
-]
+  "INTJ",
+  "INTP",
+  "ENTJ",
+  "ENTP",
+  "INFJ",
+  "INFP",
+  "ENFJ",
+  "ENFP",
+  "ISTJ",
+  "ISFJ",
+  "ESTJ",
+  "ESFJ",
+  "ISTP",
+  "ISFP",
+  "ESTP",
+  "ESFP",
+];
 
 export default function MBTIMatchPage() {
-  const [selectedMBTI, setSelectedMBTI] = useState('')
+  const [selectedMBTI, setSelectedMBTI] = useState("");
 
   const matchMutation = useMutation({
     mutationFn: getMBTIMatch,
-  })
+  });
 
   const handleSearch = () => {
-    if (!selectedMBTI) return
-    matchMutation.mutate({ mbti: selectedMBTI })
-  }
+    if (!selectedMBTI) return;
+    matchMutation.mutate({ mbti: selectedMBTI });
+  };
 
   return (
     <div className="min-h-screen py-8">
@@ -40,7 +58,9 @@ export default function MBTIMatchPage() {
         <Card className="mb-8">
           <CardHeader>
             <CardTitle>나의 MBTI를 선택하세요</CardTitle>
-            <CardDescription>16가지 유형 중 하나를 선택해주세요</CardDescription>
+            <CardDescription>
+              16가지 유형 중 하나를 선택해주세요
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-4 gap-3 mb-4">
@@ -50,8 +70,8 @@ export default function MBTIMatchPage() {
                   onClick={() => setSelectedMBTI(type)}
                   className={`p-4 rounded-lg border-2 font-bold transition-all hover:shadow-md ${
                     selectedMBTI === type
-                      ? 'border-primary bg-primary text-primary-foreground'
-                      : 'border-border hover:border-primary/50'
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-border hover:border-primary/50"
                   }`}
                 >
                   {type}
@@ -85,7 +105,8 @@ export default function MBTIMatchPage() {
             <Card className="mb-6">
               <CardHeader>
                 <CardTitle>
-                  {matchMutation.data.mbti} - {matchMutation.data.mbti_type_name}
+                  {matchMutation.data.mbti} -{" "}
+                  {matchMutation.data.mbti_type_name}
                 </CardTitle>
                 <CardDescription>
                   {matchMutation.data.mbti_description}
@@ -102,7 +123,7 @@ export default function MBTIMatchPage() {
                       <div>
                         <h3 className="text-xl font-bold">{dog.type_name}</h3>
                         <p className="text-sm text-muted-foreground">
-                          {dog.dbti_code}
+                          {dog.pawna_code}
                         </p>
                       </div>
                       <div className="text-right">
@@ -143,6 +164,5 @@ export default function MBTIMatchPage() {
         )}
       </div>
     </div>
-  )
+  );
 }
-
