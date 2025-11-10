@@ -1,13 +1,14 @@
 """
-DBTI (Dog Behavior Type Indicator) Pydantic Models
+Pawna (Pawsonality) Pydantic Models
+Dog Personality Test Data Models
 """
 from pydantic import BaseModel, Field
 from typing import List, Optional
 from datetime import datetime
 
 
-class DBTIQuestion(BaseModel):
-    """DBTI 질문 모델"""
+class PawnaQuestion(BaseModel):
+    """Pawsonality 질문 모델"""
     id: int = Field(..., description="질문 ID (1-12)")
     title: str = Field(..., description="질문 제목")
     type: str = Field(..., description="MBTI 차원 (EI, SN, TF, JP)")
@@ -27,8 +28,8 @@ class DBTIQuestion(BaseModel):
     }
 
 
-class DBTIAnswer(BaseModel):
-    """DBTI 답변 모델"""
+class PawnaAnswer(BaseModel):
+    """Pawsonality 답변 모델"""
     question_id: int = Field(..., ge=1, le=12, description="질문 ID (1-12)")
     selected: str = Field(..., pattern="^[AB]$", description="선택된 답변 (A 또는 B)")
     
@@ -42,9 +43,9 @@ class DBTIAnswer(BaseModel):
     }
 
 
-class DBTISubmission(BaseModel):
-    """DBTI 제출 모델"""
-    answers: List[DBTIAnswer] = Field(..., min_length=12, max_length=12, description="12개의 답변")
+class PawnaSubmission(BaseModel):
+    """Pawsonality 제출 모델"""
+    answers: List[PawnaAnswer] = Field(..., min_length=12, max_length=12, description="12개의 답변")
     
     model_config = {
         "json_schema_extra": {
@@ -58,9 +59,9 @@ class DBTISubmission(BaseModel):
     }
 
 
-class DBTIType(BaseModel):
-    """DBTI 유형 정보"""
-    dbti: str = Field(..., description="DBTI 코드 (예: WTIL)")
+class PawnaType(BaseModel):
+    """Pawsonality 유형 정보"""
+    pawna_code: str = Field(..., description="Pawna 코드 (예: WTIL)")
     mbti: str = Field(..., description="대응되는 MBTI 코드 (예: ENFP)")
     type_name: str = Field(..., description="유형 이름")
     description: str = Field(..., description="유형 설명")
@@ -70,10 +71,10 @@ class DBTIType(BaseModel):
     site_url: Optional[str] = Field(None, description="참고 사이트 URL")
 
 
-class DBTIResult(BaseModel):
-    """DBTI 결과 모델"""
-    dbti_code: str = Field(..., description="DBTI 유형 코드")
-    dbti_type: Optional[str] = Field(None, description="DBTI 유형 코드 (호환성)")
+class PawnaResult(BaseModel):
+    """Pawsonality 결과 모델"""
+    pawna_code: str = Field(..., description="Pawna 유형 코드")
+    pawna_type: Optional[str] = Field(None, description="Pawna 유형 코드 (호환성)")
     mbti_type: str = Field(..., description="MBTI 유형 코드")
     type_name: str = Field(..., description="유형 이름")
     description: str = Field(..., description="유형 설명")
@@ -88,7 +89,8 @@ class DBTIResult(BaseModel):
     model_config = {
         "json_schema_extra": {
             "example": {
-                "dbti_type": "WTIL",
+                "pawna_code": "WTIL",
+                "pawna_type": "WTIL",
                 "mbti_type": "ENFP",
                 "type_name": "활발한 탐험가",
                 "description": "호기심 많고 활동적인 성격",
