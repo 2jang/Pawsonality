@@ -24,6 +24,10 @@ export default function PawnaResultPage() {
     enabled: !!code,
   });
 
+  const careTips = result?.care_tips ?? [];
+  const bestMatches = result?.compatibility?.best_match ?? [];
+  const goodMatches = result?.compatibility?.good_match ?? [];
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -89,7 +93,7 @@ export default function PawnaResultPage() {
           </CardHeader>
           <CardContent>
             <ul className="space-y-2">
-              {result.care_tips.map((tip, index) => (
+              {careTips.map((tip, index) => (
                 <li key={index} className="flex items-start gap-2">
                   <span className="text-primary mt-1">•</span>
                   <span>{tip}</span>
@@ -108,7 +112,7 @@ export default function PawnaResultPage() {
             <div>
               <h3 className="font-semibold mb-2 text-green-600">최고의 궁합</h3>
               <div className="flex flex-wrap gap-2">
-                {result.compatibility.best_match.map((match, index) => (
+                {bestMatches.map((match, index) => (
                   <span
                     key={index}
                     className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium"
@@ -121,7 +125,7 @@ export default function PawnaResultPage() {
             <div>
               <h3 className="font-semibold mb-2 text-blue-600">좋은 궁합</h3>
               <div className="flex flex-wrap gap-2">
-                {result.compatibility.good_match.map((match, index) => (
+                {goodMatches.map((match, index) => (
                   <span
                     key={index}
                     className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium"
